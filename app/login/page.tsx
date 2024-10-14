@@ -3,6 +3,9 @@ import React from 'react'
 
 export default function LoginPage() {
   return (
- <LoginForm/>   
+    <div className="h-lvh bg-gradient-to-tl from-slate-300 to-blue-500">
+      <LoginForm/>
+    </div>
+ 
   )
 }
