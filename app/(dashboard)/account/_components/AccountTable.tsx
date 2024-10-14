@@ -14,6 +14,7 @@ import { Chip, ChipProps } from "@nextui-org/chip";
 import React from "react";
 import ViewIcon, { EditIcon } from "@/app/(dashboard)/account/_components/Icon";
 import {Tooltip} from "@nextui-org/tooltip";
+import {Pagination} from "@nextui-org/pagination"
 
 type User = typeof rows[0];
    const rows  = [
@@ -172,12 +173,12 @@ export default function AccountsTable() {
           return (
             <div className="relative flex items-center gap-2">
               <Tooltip content="View">
-                <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+                <span className="text-lg cursor-pointer active:opacity-50">
                   <ViewIcon />
                 </span>
               </Tooltip>
               <Tooltip content="Edit">
-                <span className="text-lg text-default-400 cursor-pointer active:opacity-50 mb-1">
+                <span className="text-lg cursor-pointer active:opacity-50 mb-1">
                   <EditIcon />
                 </span>
               </Tooltip>
@@ -187,16 +188,11 @@ export default function AccountsTable() {
    },  [])
 
    return (
-    <Table
+    <div>
+ <Table
       selectionMode="multiple"
   
-      // className="p-1"
-      // classNames={{
-      //   wrapper: "bg-white",
-      //   tbody: "bg-white text-black",
-      //   th: "bg-gray-200",
-      // }       
-      // }
+      className="m-5 w-auto"
     >
       <TableHeader columns={columns}>
         {(columns) => (
@@ -213,5 +209,9 @@ export default function AccountsTable() {
         )}
       </TableBody>
     </Table>
+    <Pagination 
+    className="m-4 flex justify-center"
+    isCompact loop showControls total={12} initialPage={1}/>
+    </div>
   );
 }
