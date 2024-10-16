@@ -5,23 +5,23 @@ import {Input} from "@nextui-org/input";
 export default function ActionBar() {
   return (
     <div className="p-4 flex items-center gap-2">
-      <Input type="name" label="Search by name, group, technology,..." className="w-[45%]"/>
-      <Button color="success" className="text-white" variant="shadow">
+      <Input type="name" placeholder="Search by name, group, technology,..." className="w-[45%] h-10"/>
+      <Button color="success" size="sm" className="text-white" >
         <ExcIcon /> Export to Excel
       </Button>
 
-      <Button color="secondary"  variant="shadow">
+      <Button color="secondary" size="sm">
         <EmailIcon/> Send email
       </Button>
-      <Button color="danger" variant="shadow"> 
+      <Button color="danger" size="sm" > 
         <DeleteIcon/>
         Delete
       </Button>
-      <Button color="primary" variant="shadow">
+      <Button color="primary" size="sm" >
         <CreateNewIcon/>
         New intern
       </Button>
-      <Button color ="primary" variant="shadow">
+      <Button color ="primary" size="sm">
         <FilterIcon/>
         Filter
       </Button>
