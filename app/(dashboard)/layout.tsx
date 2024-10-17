@@ -9,7 +9,7 @@ export default function DashBoardLayout(props: DashBoardLayoutProps) {
   return (
     <main className="flex h-screen w-screen bg-dashboard-bg">
       <SideBar />
-      <div className="grow rounded-3xl bg-white">{props.children}</div>
+      <div className="h-full grow rounded-3xl bg-white">{props.children}</div>
     </main>
   );
 }

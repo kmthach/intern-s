@@ -7,7 +7,7 @@ import { User } from "@nextui-org/user";
 
 export default function SideBar() {
   return (
-    <div className="flex w-sidebar-expand flex-col items-center px-3">
+    <div className="flex h-full w-sidebar-expand flex-col items-center px-3">
       {/* Title */}
       <p className="my-10 text-2xl font-bold text-title">Intern System</p>
       <Divider orientation="horizontal" className="bg-grey" />
