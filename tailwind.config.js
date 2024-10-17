@@ -19,7 +19,7 @@ module.exports = {
         grey: "rgba(128, 128, 128, 0.55)",
       },
       width: {
-        "sidebar-expand": "327px",
+        "sidebar-expand": "250px",
       },
     },
   },
