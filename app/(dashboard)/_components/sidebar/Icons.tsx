@@ -10,7 +10,6 @@ import PositionManagementActiveSVG from "@/public/icons/sidebar/position-managem
 import PositionManagementInactiveSVG from "@/public/icons/sidebar/position-management-inactive.svg";
 import TechnologyManagementActiveSVG from "@/public/icons/sidebar/technology-management-active.svg";
 import TechnologyManagementInactiveSVG from "@/public/icons/sidebar/technology-management-inactive.svg";
-
 import Image from "next/image";
 
 type SidebarIconProps = {
