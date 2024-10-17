@@ -38,7 +38,7 @@ export default function MembersTable() {
       </TableHeader>
       <TableBody items={members}>
         {(item) => (
-          <TableRow key={item.key}>
+          <TableRow>
             {(columnKey) => (
               <TableCell>{getKeyValue(item, columnKey)}</TableCell>
             )}
