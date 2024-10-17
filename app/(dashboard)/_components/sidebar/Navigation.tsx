@@ -63,11 +63,12 @@ export default function Navigation(props: NavigationProps) {
             as={Link}
             startContent={<item.icon size={24} active={isActive} />}
             className={cn(
-              "text-grey justify-start text-base font-medium",
+              "justify-start text-base font-medium text-grey",
               isActive && "font-semibold text-white",
             )}
             href={item.href}
             size="lg"
+            key={item.label}
           >
             {item.label}
           </Button>
