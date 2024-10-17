@@ -6,7 +6,7 @@ export default function SideBar() {
   return (
     <div className="flex w-sidebar-expand flex-col items-center">
       {/* Title */}
-      <p className="my-10 text-[26px] font-bold text-title">Intern System</p>
+      <p className="my-10 text-2xl font-bold text-title">Intern System</p>
       <Divider orientation="horizontal" className="bg-grey" />
 
       {/* Navigation */}
