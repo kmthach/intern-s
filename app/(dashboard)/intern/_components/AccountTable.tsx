@@ -12,7 +12,7 @@ import {
 
 import { Chip, ChipProps } from "@nextui-org/chip";
 import React from "react";
-import ViewIcon, { EditIcon } from "@/app/(dashboard)/account/_components/Icon";
+import ViewIcon, { EditIcon } from "@/app/(dashboard)/intern/_components/Icon";
 import { Tooltip } from "@nextui-org/tooltip";
 import { Pagination } from "@nextui-org/pagination";
 
