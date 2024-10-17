@@ -4,6 +4,7 @@ import AddSVG from "@/public/icons/actionbar/add-icon.svg";
 
 import FilterSVG from "@/public/icons/actionbar/filter-icon.svg";
 import ShowSVG from "@/public/icons/actionbar/show-icon.svg";
+import InterviewSVG from "@/public/icons/actionbar/interview-icon.svg";
 import Image from "next/image";
 
 type ActionBarIconProps = {
@@ -60,10 +61,21 @@ export const ShowIcon = ({ size = 24, className }: ActionBarIconProps) => (
   />
 );
 
+export const InterviewIcon = ({ size = 24, className }: ActionBarIconProps) => (
+  <Image
+    src={InterviewSVG}
+    alt="Interview"
+    width={size}
+    height={size}
+    className={className}
+  />
+);
+
 export default {
   ExcelIcon,
   DeleteIcon,
   AddIcon,
   FilterIcon,
   ShowIcon,
+  InterviewIcon,
 };
