@@ -3,7 +3,7 @@ import {
   CreateNewIcon,
   DeleteIcon,
   ExcIcon,
-} from "@/app/(dashboard)/account/_components/Icon";
+} from "@/app/(dashboard)/intern/_components/Icon";
 import { Input } from "@nextui-org/input";
 
 export default function ActionBar() {
