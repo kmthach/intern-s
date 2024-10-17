@@ -11,14 +11,15 @@ export default function ActionBar(props: ActionBarProps) {
       <Input
         size="md"
         placeholder="Search by name, mentor, technology,..."
-        className="w-[700px]"
+        // className="w-[700px]"
+        className="flex-1"
       />
-      <div className="flex gap-3">
+      <div className="flex min-w-max gap-3">
         <Button
           color="success"
           size="md"
           startContent={<ExcelIcon />}
-          className="w-fit text-white"
+          className="text-white"
           variant="shadow"
         >
           Export to Excel

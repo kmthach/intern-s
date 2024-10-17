@@ -53,7 +53,7 @@ export default function Navigation(props: NavigationProps) {
   const currentPath = usePathname();
 
   return (
-    <div className={cn("flex w-full flex-col gap-4 px-4", props.className)}>
+    <div className={cn("flex w-full flex-col gap-4", props.className)}>
       {NavigationItems.map((item) => {
         const isActive = currentPath === item.href;
         return (
