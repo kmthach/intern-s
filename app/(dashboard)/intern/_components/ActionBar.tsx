@@ -51,11 +51,11 @@ export default function ActionBar() {
         placeholder="Search by name, group, technology,..."
         className="h-10 w-[45%]"
       />
-      <Button color="success" size="sm" className="text-white">
+      <Button color="success" size="sm" variant="shadow" className="text-white">
         <ExcelIcon /> Export to Excel
       </Button>
 
-      <Button color="secondary" size="sm" onPress={onOpen}>
+      <Button color="secondary" size="sm" variant="shadow" onPress={onOpen}>
         <EmailIcon /> Send email
       </Button>
 
@@ -88,11 +88,21 @@ export default function ActionBar() {
               </ModalBody>
 
               <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
+                <Button
+                  color="danger"
+                  variant="light"
+                  size="sm"
+                  onPress={onClose}
+                >
                   Close
                 </Button>
-                <Button color="primary" onPress={onClose}>
-                  Action
+                <Button
+                  color="secondary"
+                  size="sm"
+                  variant="shadow"
+                  onPress={onClose}
+                >
+                  <EmailIcon /> Send email
                 </Button>
               </ModalFooter>
             </>
@@ -100,15 +110,15 @@ export default function ActionBar() {
         </ModalContent>
       </Modal>
 
-      <Button color="danger" size="sm">
+      <Button color="danger" size="sm" variant="shadow">
         <DeleteIcon />
         Delete
       </Button>
-      <Button color="primary" size="sm">
+      <Button color="primary" size="sm" variant="shadow">
         <CreateIcon />
         New intern
       </Button>
-      <Button color="default" size="sm">
+      <Button color="default" size="sm" variant="shadow">
         <FilterIcon />
         Filter
       </Button>
