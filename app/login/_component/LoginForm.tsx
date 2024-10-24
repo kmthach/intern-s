@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Input } from "@nextui-org/input";
 import {
   EyeFilledIcon,
@@ -9,21 +9,50 @@ import {
 } from "@/app/login/_component/Icon";
 import { Checkbox } from "@nextui-org/checkbox";
 import { Button } from "@nextui-org/button";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export const LoginForm = () => {
-  const [visible, setVisible] = React.useState(false);
+  const [visible, setVisible] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const router = useRouter();
 
   const toggleVisible = () => {
     setVisible(!visible);
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!email || !password) {
+      setErrorMessage("Please fill in all fields");
+      return;
+    }
+
+    const result = await signIn("credentials", {
+      redirect: false,
+      email,
+      password,
+    });
+
+    if (result?.error) {
+      setErrorMessage("Invalid email or password");
+    } else {
+      router.push("/");
+    }
+  };
+
   return (
     <>
-      <div className="flex items-center justify-center min-h-screen">
-        
-          <div className="w-[30%] bg-white p-10 rounded-xl shadow-xl">
-            <div className="text-2xl font-semibold text-center mb-10">Welcome!</div>
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="w-[30%] rounded-xl bg-white p-10 shadow-xl">
+          <div className="mb-10 text-center text-2xl font-semibold">
+            Welcome!
+          </div>
 
+          <form onSubmit={handleSubmit}>
             <Input
               type="email"
               label="Email"
@@ -31,7 +60,9 @@ export const LoginForm = () => {
               labelPlacement="outside"
               className="mb-10"
               placeholder="example@mail.com"
-            ></Input>
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
             <Input
               label="Password"
               labelPlacement="outside"
@@ -43,7 +74,12 @@ export const LoginForm = () => {
                 </button>
               }
               type={visible ? "text" : "password"}
-            ></Input>
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            {errorMessage && (
+              <div className="mb-4 text-red-500">{errorMessage}</div>
+            )}
 
             <div className="mt-4">
               <Checkbox defaultSelected size="md"></Checkbox>
@@ -53,25 +89,27 @@ export const LoginForm = () => {
               </span>
             </div>
 
-            <Button className="mt-4 w-[100%]" color="primary">
+            <Button type="submit" className="mt-4 w-[100%]" color="primary">
               Sign in
             </Button>
+          </form>
 
-            <div className="flex justify-center">
-              <hr className="mt-6 h-0.5 w-44 bg-gray-300" />
-              <p className="ml-1 mr-1 mt-3 text-gray-300">OR</p>
-              <hr className="mt-6 h-0.5 w-44 bg-gray-300" />
-            </div>
-
-            <Button
-              className="mt-4 w-[100%]"
-              variant="bordered"
-              startContent={<GoogleIcon />}
-            >
-              Sign in with Google
-            </Button>
+          <div className="flex justify-center">
+            <hr className="mt-6 h-0.5 w-44 bg-gray-300" />
+            <p className="ml-1 mr-1 mt-3 text-gray-300">OR</p>
+            <hr className="mt-6 h-0.5 w-44 bg-gray-300" />
           </div>
+
+          <Button
+            className="mt-4 w-[100%]"
+            variant="bordered"
+            startContent={<GoogleIcon />}
+            onPress={() => signIn("google")}
+          >
+            Sign in with Google
+          </Button>
         </div>
+      </div>
     </>
   );
 };
