@@ -15,24 +15,24 @@ import ViewIcon, { EditIcon } from "@/app/(dashboard)/intern/_components/Icon";
 import { Tooltip } from "@nextui-org/tooltip";
 import { Pagination } from "@nextui-org/pagination";
 import { useQuery } from "@tanstack/react-query"; //get request
-
+import { apiEndpoints } from "@/libs/config";
 const statusColorMap: Record<string, ChipProps["color"]> = {
   CompletedOjt: "success",
   Rejected: "danger",
   Pending: "warning",
 };
 
-export default function AccountsTable() {
-  const { data: allData } = useQuery({
+export type AccountTableProps = {
+  selectedInterns: any[];
+  setSelectedInterns: (interns: any[]) => void;
+};
+export default function AccountsTable(props: AccountTableProps) {
+  const { data: allData, status } = useQuery({
     queryKey: ["allData"],
     queryFn: async () => {
       const [candidateData, schoolData, internPeriodData] = await Promise.all([
-        fetch(
-          "https://intern-system-web-fjd3dcb9abf9etec.canadacentral-01.azurewebsites.net/api/candidate",
-        ).then((res) => res.json()),
-        fetch(
-          "https://intern-system-web-fjd3dcb9abf9etec.canadacentral-01.azurewebsites.net/api/university",
-        ).then((res) => res.json()),
+        fetch(apiEndpoints.candidate).then((res) => res.json()),
+        fetch(apiEndpoints.university).then((res) => res.json()),
         fetch(
           "https://intern-system-web-fjd3dcb9abf9etec.canadacentral-01.azurewebsites.net/api/intern-period",
         ).then((res) => res.json()),
@@ -175,7 +175,13 @@ export default function AccountsTable() {
   return (
     <>
       <div>
-        <Table selectionMode="multiple" className="m-5 w-auto">
+        <Table
+          selectionMode="multiple"
+          className="m-5 w-auto"
+          onSelectionChange={(selected) => {
+            console.log(selected);
+          }}
+        >
           <TableHeader columns={columns}>
             {(columns) => (
               <TableColumn key={columns.key}>{columns.label}</TableColumn>

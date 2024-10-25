@@ -23,7 +23,11 @@ import {
 import { Select, SelectItem } from "@nextui-org/select";
 import { useMutation } from "@tanstack/react-query";
 
-export default function ActionBar() {
+export type ActionBarProps = {
+  selectedInterns: any[];
+};
+
+export default function ActionBar(props: ActionBarProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const {} = useMutation({
     mutationFn: (newPost) =>
@@ -116,7 +120,14 @@ export default function ActionBar() {
         </ModalContent>
       </Modal>
 
-      <Button color="danger" size="sm" variant="shadow">
+      <Button
+        color="danger"
+        size="sm"
+        variant="shadow"
+        onClick={() => {
+          props.selectedInterns;
+        }}
+      >
         <DeleteIcon />
         Delete
       </Button>
