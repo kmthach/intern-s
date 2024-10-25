@@ -21,10 +21,16 @@ import {
 } from "@nextui-org/modal";
 
 import { Select, SelectItem } from "@nextui-org/select";
+import { useMutation } from "@tanstack/react-query";
 
 export default function ActionBar() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
+  const {} = useMutation({
+    mutationFn: (newPost) =>
+      fetch(
+        "https://intern-system-web-fjd3dcb9abf9etec.canadacentral-01.azurewebsites.net/api/candidate",
+      ),
+  });
   const emailType = [
     {
       key: "interview",

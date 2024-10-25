@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import AccountTable from "@/app/(dashboard)/intern/_components/AccountTable";
 import ActionBar from "@/app/(dashboard)/intern/_components/ActionBar";
 
