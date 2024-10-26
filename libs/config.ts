@@ -4,4 +4,5 @@ export const API_BASE_URL =
 export const apiEndpoints = {
   candidate: `${API_BASE_URL}/candidate`,
   university: `${API_BASE_URL}/university`,
+  internPeroid: `${API_BASE_URL}/intern-period`,
 };

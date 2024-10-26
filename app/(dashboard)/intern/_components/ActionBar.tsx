@@ -22,6 +22,7 @@ import {
 
 import { Select, SelectItem } from "@nextui-org/select";
 import { useMutation } from "@tanstack/react-query";
+import NewInternModal from "@/app/(dashboard)/intern/_components/NewInternModal";
 
 export type ActionBarProps = {
   selectedInterns: any[];
@@ -131,10 +132,7 @@ export default function ActionBar(props: ActionBarProps) {
         <DeleteIcon />
         Delete
       </Button>
-      <Button color="primary" size="sm" variant="shadow">
-        <CreateIcon />
-        New intern
-      </Button>
+      <NewInternModal />
       <Button color="default" size="sm" variant="shadow">
         <FilterIcon />
         Filter

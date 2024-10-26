@@ -27,15 +27,13 @@ export type AccountTableProps = {
   setSelectedInterns: (interns: any[]) => void;
 };
 export default function AccountsTable(props: AccountTableProps) {
-  const { data: allData, status } = useQuery({
+  const { data: allData } = useQuery({
     queryKey: ["allData"],
     queryFn: async () => {
       const [candidateData, schoolData, internPeriodData] = await Promise.all([
         fetch(apiEndpoints.candidate).then((res) => res.json()),
         fetch(apiEndpoints.university).then((res) => res.json()),
-        fetch(
-          "https://intern-system-web-fjd3dcb9abf9etec.canadacentral-01.azurewebsites.net/api/intern-period",
-        ).then((res) => res.json()),
+        fetch(apiEndpoints.internPeroid).then((res) => res.json()),
       ]);
 
       return {
