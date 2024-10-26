@@ -3,7 +3,7 @@ import { Divider } from "@nextui-org/divider";
 import { AccountManagementIcon, DashboardIcon } from "./Icons";
 import Navigation from "./Navigation";
 import { Card, CardBody } from "@nextui-org/card";
-import { User } from "@nextui-org/user";
+import User from "./User";
 
 export default function SideBar() {
   return (
@@ -16,17 +16,8 @@ export default function SideBar() {
       <Navigation className="mt-10" />
 
       {/* Footer*/}
-      <Card className="mb-3 mt-auto w-full">
-        <CardBody className="justify-left items-start">
-          <User
-            name="Jane Doe"
-            description="Admin"
-            avatarProps={{
-              src: "https://i.pravatar.cc/150?u=a04258114e29026702d",
-            }}
-          />
-        </CardBody>
-      </Card>
+
+      <User className="mb-3 mt-auto w-full" />
     </div>
   );
 }

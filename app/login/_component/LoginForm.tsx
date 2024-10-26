@@ -9,8 +9,8 @@ import {
 } from "@/app/login/_component/Icon";
 import { Checkbox } from "@nextui-org/checkbox";
 import { Button } from "@nextui-org/button";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
+import { login } from "@/actions/auth";
 
 export const LoginForm = () => {
   const [visible, setVisible] = useState(false);
@@ -23,27 +23,6 @@ export const LoginForm = () => {
     setVisible(!visible);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!email || !password) {
-      setErrorMessage("Please fill in all fields");
-      return;
-    }
-
-    const result = await signIn("credentials", {
-      redirect: false,
-      email,
-      password,
-    });
-
-    if (result?.error) {
-      setErrorMessage("Invalid email or password");
-    } else {
-      router.push("/");
-    }
-  };
-
   return (
     <>
       <div className="flex min-h-screen items-center justify-center">
@@ -52,7 +31,22 @@ export const LoginForm = () => {
             Welcome!
           </div>
 
-          <form onSubmit={handleSubmit}>
+          <form
+            action={async (formData) => {
+              const result = await login(formData);
+
+              if ("error" in result) {
+                setErrorMessage(result.error);
+              } else {
+                // Set user info to the local storage
+                Object.entries(result).forEach(([key, value]) => {
+                  window.localStorage.setItem(key, value);
+                });
+
+                redirect("/");
+              }
+            }}
+          >
             <Input
               type="email"
               label="Email"
@@ -60,8 +54,10 @@ export const LoginForm = () => {
               labelPlacement="outside"
               className="mb-10"
               placeholder="example@mail.com"
+              name="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
             />
             <Input
               label="Password"
@@ -73,9 +69,11 @@ export const LoginForm = () => {
                   {visible ? <EyeSlashFilledIcon /> : <EyeFilledIcon />}
                 </button>
               }
+              name="password"
               type={visible ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
             {errorMessage && (
               <div className="mb-4 text-red-500">{errorMessage}</div>
@@ -104,7 +102,7 @@ export const LoginForm = () => {
             className="mt-4 w-[100%]"
             variant="bordered"
             startContent={<GoogleIcon />}
-            onPress={() => signIn("google")}
+            // onPress={() => signIn("google")}
           >
             Sign in with Google
           </Button>
