@@ -124,7 +124,9 @@ export default function AccountsTable(props: AccountTableProps) {
         case "fullName":
           return <div>{candidate.fullName}</div>;
         case "group":
-          return <div>{getInternPeroidName(candidate.internPeriodId)}</div>;
+          return (
+            <div>{getInternPeroidName(candidate.internPeriodId) as string}</div>
+          );
         case "doB":
           return <div>{formatDateOfBirth(candidate.doB)}</div>;
         case "phoneNumber":
@@ -138,7 +140,7 @@ export default function AccountsTable(props: AccountTableProps) {
         case "role":
           return <div>{candidate.role}</div>;
         case "universityId":
-          return <div>{getSchoolName(candidate.universityId)}</div>;
+          return <div>{getSchoolName(candidate.universityId) as string}</div>;
         case "status":
           return (
             <Chip
