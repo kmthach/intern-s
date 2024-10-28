@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
+import ActionBar from "@/app/(dashboard)/_components/dashboard/ActionBar";
 import AccountTable from "@/app/(dashboard)/intern/_components/AccountTable";
-import ActionBar from "@/app/(dashboard)/intern/_components/ActionBar";
 
 export default function InternPage() {
   const [selectedInterns, setSelectedInterns] = useState([] as any[]);

@@ -33,7 +33,7 @@ export default function AccountsTable(props: AccountTableProps) {
       const [candidateData, schoolData, internPeriodData] = await Promise.all([
         fetch(apiEndpoints.candidate).then((res) => res.json()),
         fetch(apiEndpoints.university).then((res) => res.json()),
-        fetch(apiEndpoints.internPeroid).then((res) => res.json()),
+        fetch(apiEndpoints.internPeriod).then((res) => res.json()),
       ]);
 
       return {
