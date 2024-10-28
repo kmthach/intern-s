@@ -5,5 +5,5 @@ export const apiEndpoints = {
   login: `${API_BASE_URL}/auth/signin`,
   candidate: `${API_BASE_URL}/candidate`,
   university: `${API_BASE_URL}/university`,
-  internPeroid: `${API_BASE_URL}/intern-period`,
+  internPeriod: `${API_BASE_URL}/intern-period`,
 };

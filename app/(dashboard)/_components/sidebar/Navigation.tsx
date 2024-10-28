@@ -33,6 +33,11 @@ export const NavigationItems = [
     icon: InternManagementIcon,
   },
   {
+    label: "Internship period",
+    href: "/internPeriod",
+    icon: InternManagementIcon,
+  },
+  {
     label: "Positions",
     href: "/position",
     icon: PositionManagementIcon,
