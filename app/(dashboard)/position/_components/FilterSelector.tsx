@@ -30,36 +30,6 @@ export default function FilterSelector() {
     <Card className="h-full w-[400px] p-3">
       <CardBody>
         <div className="flex flex-col gap-3">
-          {/* <Select
-            label="Project"
-            className="max-w-xs"
-            variant="underlined"
-            labelPlacement="outside"
-            placeholder="Select name of project"
-            classNames={{
-              label: "font-semibold",
-            }}
-          >
-            {animals.map((animal) => (
-              <SelectItem key={animal.key}>{animal.label}</SelectItem>
-            ))}
-          </Select>
-
-          <Select
-            label="Leader"
-            className="max-w-xs"
-            variant="underlined"
-            labelPlacement="outside"
-            placeholder="Select name of leader"
-            classNames={{
-              label: "font-semibold",
-            }}
-          >
-            {animals.map((animal) => (
-              <SelectItem key={animal.key}>{animal.label}</SelectItem>
-            ))}
-          </Select> */}
-
           {filters.map((filter) => (
             <div className="flex flex-col gap-2" key={filter.key}>
               <p className="text-sm font-semibold">{filter.label}</p>
