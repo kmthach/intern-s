@@ -30,6 +30,7 @@ const columns = [
   { key: "technology", label: "Technology" },
   { key: "level", label: "Level" },
 ];
+
 export default function MembersTable() {
   return (
     <Table aria-label="Example table with dynamic content">

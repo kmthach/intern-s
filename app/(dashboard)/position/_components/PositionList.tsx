@@ -10,6 +10,7 @@ export type PositionListProps = {
 };
 export default function PositionList(props: PositionListProps) {
   const num_items_show = props.isShowFilter ? 4 : 6;
+
   return (
     <div className="flex w-full flex-col items-center gap-4">
       <div
@@ -19,10 +20,6 @@ export default function PositionList(props: PositionListProps) {
           props.isShowFilter ? "grid-cols-2" : "grid-cols-3",
         )}
       >
-        {/* {[1, 2, 3, 4, 5, 6].map((item) => (
-          <ProjectCard key={item} />
-        ))} */}
-
         {[...Array(num_items_show)].map((_, index) => (
           <PositionCard key={index} />
         ))}

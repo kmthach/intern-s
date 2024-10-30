@@ -11,7 +11,6 @@ import {
 import { Button } from "@nextui-org/button";
 import { AddIcon } from "./Icons";
 import { Input } from "@nextui-org/input";
-import { DatePicker } from "@nextui-org/date-picker";
 
 export default function NewPositionModal() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
