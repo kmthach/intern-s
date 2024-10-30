@@ -3,7 +3,6 @@ import { Button } from "@nextui-org/button";
 
 import {
   EmailIcon,
-  CreateIcon,
   FilterIcon,
   ExcelIcon,
   DeleteIcon,
@@ -21,21 +20,10 @@ import {
 } from "@nextui-org/modal";
 
 import { Select, SelectItem } from "@nextui-org/select";
-import { useMutation } from "@tanstack/react-query";
 import NewInternModal from "@/app/(dashboard)/intern/_components/NewInternModal";
 
-export type ActionBarProps = {
-  selectedInterns: any[];
-};
-
-export default function ActionBar(props: ActionBarProps) {
+export default function ActionBar() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const {} = useMutation({
-    mutationFn: (newPost) =>
-      fetch(
-        "https://intern-system-web-fjd3dcb9abf9etec.canadacentral-01.azurewebsites.net/api/candidate",
-      ),
-  });
   const emailType = [
     {
       key: "interview",
@@ -121,14 +109,7 @@ export default function ActionBar(props: ActionBarProps) {
         </ModalContent>
       </Modal>
 
-      <Button
-        color="danger"
-        size="sm"
-        variant="shadow"
-        onClick={() => {
-          props.selectedInterns;
-        }}
-      >
+      <Button color="danger" size="sm" variant="shadow">
         <DeleteIcon />
         Delete
       </Button>

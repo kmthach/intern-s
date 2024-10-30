@@ -7,7 +7,6 @@ import {
   TableColumn,
   TableRow,
   TableCell,
-  getKeyValue,
 } from "@nextui-org/table";
 
 import { Chip, ChipProps } from "@nextui-org/chip";
@@ -19,6 +18,7 @@ import {
 import { Tooltip } from "@nextui-org/tooltip";
 import { useMutation, useQuery } from "@tanstack/react-query"; //get request
 import { apiEndpoints } from "@/libs/config";
+import { Spinner } from "@nextui-org/spinner";
 const statusColorMap: Record<string, ChipProps["color"]> = {
   InProgress: "success",
   Rejected: "danger",
@@ -26,7 +26,7 @@ const statusColorMap: Record<string, ChipProps["color"]> = {
 };
 
 export default function InternPeroidTable() {
-  const { isLoading, error, isSuccess, data, refetch } = useQuery({
+  const { isLoading, error, data, refetch } = useQuery({
     queryKey: ["data"],
     queryFn: async () => {
       const internPeriod = await fetch(apiEndpoints.internPeriod).then((res) =>
@@ -158,38 +158,36 @@ export default function InternPeroidTable() {
   }, []);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Spinner size="lg" />;
   }
 
   if (error) {
     return <div>Error + {error.message}</div>;
   }
 
-  if (isSuccess) {
-    return (
-      <>
-        <Table
-          selectionMode="multiple"
-          onSelectionChange={(selected) => {
-            console.log(selected);
-          }}
-        >
-          <TableHeader columns={columns}>
-            {(column) => (
-              <TableColumn key={column.key}>{column.label}</TableColumn>
-            )}
-          </TableHeader>
-          <TableBody items={periodData}>
-            {(period: any) => (
-              <TableRow key={period.id}>
-                {(columnKey) => (
-                  <TableCell>{renderCell(period, columnKey)}</TableCell>
-                )}
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </>
-    );
-  }
+  return (
+    <>
+      <Table
+        selectionMode="multiple"
+        onSelectionChange={(selected) => {
+          console.log(selected);
+        }}
+      >
+        <TableHeader columns={columns}>
+          {(column) => (
+            <TableColumn key={column.key}>{column.label}</TableColumn>
+          )}
+        </TableHeader>
+        <TableBody items={periodData}>
+          {(period: any) => (
+            <TableRow key={period.id}>
+              {(columnKey) => (
+                <TableCell>{renderCell(period, columnKey)}</TableCell>
+              )}
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+    </>
+  );
 }

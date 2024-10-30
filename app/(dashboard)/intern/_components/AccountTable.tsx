@@ -11,11 +11,13 @@ import {
 
 import { Chip, ChipProps } from "@nextui-org/chip";
 import React from "react";
-import ViewIcon, { EditIcon } from "@/app/(dashboard)/intern/_components/Icon";
+import { EditIcon } from "@/app/(dashboard)/intern/_components/Icon";
 import { Tooltip } from "@nextui-org/tooltip";
 import { Pagination } from "@nextui-org/pagination";
-import { useQuery } from "@tanstack/react-query"; //get request
+import { useMutation, useQuery } from "@tanstack/react-query"; //get request
 import { apiEndpoints } from "@/libs/config";
+import { DeleteIcon } from "@/app/(dashboard)/intern/_components/Icons";
+import { Spinner } from "@nextui-org/spinner";
 const statusColorMap: Record<string, ChipProps["color"]> = {
   CompletedOjt: "success",
   Rejected: "danger",
@@ -27,8 +29,12 @@ export type AccountTableProps = {
   setSelectedInterns: (interns: any[]) => void;
 };
 export default function AccountsTable(props: AccountTableProps) {
-  const { data: allData } = useQuery({
-    queryKey: ["allData"],
+  const {
+    data: allData,
+    refetch,
+    isLoading,
+  } = useQuery({
+    queryKey: ["sharedAllData"],
     queryFn: async () => {
       const [candidateData, schoolData, internPeriodData] = await Promise.all([
         fetch(apiEndpoints.candidate).then((res) => res.json()),
@@ -70,6 +76,31 @@ export default function AccountsTable(props: AccountTableProps) {
     const year = String(date.getFullYear()); // Get last 2 digits of the year
 
     return `${day}/${month}/${year}`; // Return formatted date
+  };
+
+  const mutation = useMutation({
+    mutationFn: (id: number) =>
+      fetch(apiEndpoints.candidate + "/" + id, {
+        method: "DELETE",
+      }).then((response) => response.json()),
+
+    onError: (error) => {
+      console.error("Error:", error);
+    },
+
+    onSuccess: () => {
+      refetch();
+    },
+  });
+
+  const handleDelete = (id: number) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this period?",
+    );
+
+    if (confirmDelete) {
+      mutation.mutate(id);
+    }
   };
 
   const columns = [
@@ -156,9 +187,12 @@ export default function AccountsTable(props: AccountTableProps) {
           return (
             <div className="relative flex items-center gap-2">
               <Tooltip content="View">
-                <span className="cursor-pointer text-lg active:opacity-50">
-                  <ViewIcon />
-                </span>
+                <button
+                  onClick={() => handleDelete(candidate.id)}
+                  className="cursor-pointer text-lg active:opacity-50"
+                >
+                  <DeleteIcon />
+                </button>
               </Tooltip>
               <Tooltip content="Edit">
                 <span className="mb-1 cursor-pointer text-lg active:opacity-50">
@@ -171,6 +205,10 @@ export default function AccountsTable(props: AccountTableProps) {
     },
     [schools, internPeriods],
   );
+
+  if (isLoading) {
+    return <Spinner size="lg" />;
+  }
 
   return (
     <>

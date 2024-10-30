@@ -26,6 +26,7 @@
     "@nextui-org/pagination": "^2.0.36",
     "@nextui-org/select": "^2.2.7",
     "@nextui-org/snippet": "2.0.43",
+    "@nextui-org/spinner": "^2.0.34",
     "@nextui-org/switch": "2.0.34",
     "@nextui-org/system": "2.2.6",
     "@nextui-org/table": "^2.0.40",
@@ -47,7 +48,9 @@
     "react": "18.3.1",
     "react-apexcharts": "^1.4.1",
     "react-dom": "18.3.1",
+    "react-toastify": "^10.0.6",
     "usehooks-ts": "^3.1.0",
+    "xlsx": "^0.18.5",
     "zod": "^3.23.8",
     "zustand": "^5.0.0"
   },

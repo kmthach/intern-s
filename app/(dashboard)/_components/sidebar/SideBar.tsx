@@ -1,8 +1,6 @@
 import React from "react";
 import { Divider } from "@nextui-org/divider";
-import { AccountManagementIcon, DashboardIcon } from "./Icons";
 import Navigation from "./Navigation";
-import { Card, CardBody } from "@nextui-org/card";
 import User from "./User";
 
 export default function SideBar() {

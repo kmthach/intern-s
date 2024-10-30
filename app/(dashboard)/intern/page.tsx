@@ -11,7 +11,7 @@ export default function InternPage() {
       <h1 className="p-6 text-left text-2xl font-bold capitalize text-black">
         Intern management
       </h1>
-      <ActionBar selectedInterns={selectedInterns} />
+      <ActionBar />
       <AccountTable
         selectedInterns={selectedInterns}
         setSelectedInterns={setSelectedInterns}
