@@ -61,6 +61,7 @@ export default function Navigation(props: NavigationProps) {
     <div className={cn("flex w-full flex-col gap-4", props.className)}>
       {NavigationItems.map((item) => {
         const isActive = item.href === `/${currentPath.split("/")[1]}`;
+
         return (
           <Button
             color="primary"

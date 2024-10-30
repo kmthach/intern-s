@@ -7,6 +7,7 @@ import {
   AddIcon,
   ExcelIcon,
 } from "@/components/icons/ActionBarIcons";
+import ImportExcelModal from "@/app/(dashboard)/intern/_components/ImportExcelModal";
 
 export default function ActionBar() {
   return (
@@ -18,15 +19,7 @@ export default function ActionBar() {
         className="flex-1"
       />
       <div className="flex min-w-max gap-3">
-        <Button
-          color="warning"
-          size="md"
-          startContent={<AddIcon />}
-          className="text-white"
-          variant="shadow"
-        >
-          New Intern
-        </Button>
+        <ImportExcelModal />
 
         <Button
           color="primary"

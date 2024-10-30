@@ -24,12 +24,14 @@ function ImportExcelModal() {
         const sheetName = workbook.SheetNames[0];
         const sheet = workbook.Sheets[sheetName];
         const jsonData = XLSX.utils.sheet_to_json(sheet);
-        setData(jsonData);
+
+        setData(jsonData as any);
       };
       reader.readAsBinaryString(file);
 
       // Sending file to API with query parameters
       const formData = new FormData();
+
       formData.append("file", file);
 
       try {
@@ -43,7 +45,7 @@ function ImportExcelModal() {
           },
         );
       } catch (error) {
-        console.error("Upload error:", error);
+        console.log("Upload error:", error);
       }
     }
   };

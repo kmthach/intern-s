@@ -11,7 +11,7 @@ import {
   DropdownSection,
   DropdownItem,
 } from "@nextui-org/dropdown";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { logout } from "@/actions/auth";
 
 export type UserProps = {
