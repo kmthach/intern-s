@@ -9,6 +9,10 @@ import {
 } from "@/components/icons/ActionBarIcons";
 import ImportExcelModal from "@/app/(dashboard)/intern/_components/ImportExcelModal";
 
+type ActionBarProps = {
+  selectedInterns: Set<string>;
+};
+
 export default function ActionBar() {
   return (
     <div className="flex w-full gap-3">
