@@ -19,7 +19,7 @@ import { apiEndpoints } from "@/libs/config";
 import { DeleteIcon } from "@/app/(dashboard)/intern/_components/Icons";
 import { Spinner } from "@nextui-org/spinner";
 const statusColorMap: Record<string, ChipProps["color"]> = {
-  CompletedOjt: "success",
+  Approved: "success",
   Rejected: "danger",
   Pending: "warning",
 };
@@ -36,38 +36,17 @@ export default function AccountsTable(props: AccountTableProps) {
   } = useQuery({
     queryKey: ["sharedAllData"],
     queryFn: async () => {
-      const [candidateData, schoolData, internPeriodData] = await Promise.all([
-        fetch(apiEndpoints.candidate).then((res) => res.json()),
-        fetch(apiEndpoints.university).then((res) => res.json()),
-        fetch(apiEndpoints.internPeriod).then((res) => res.json()),
-      ]);
+      const candidateData = await fetch(apiEndpoints.candidate).then((res) =>
+        res.json(),
+      );
 
       return {
         candidates: candidateData?.data?.pagingData || [],
-        schools: schoolData?.data?.pagingData || [],
-        internPeriods: internPeriodData?.data?.pagingData || [],
       };
     },
   });
 
   const candidates = allData?.candidates || [];
-  const schools = allData?.schools || [];
-  const internPeriods = allData?.internPeriods || [];
-
-  const schoolMap = new Map(
-    schools.map((school: { id: any; name: any }) => [school.id, school.name]),
-  );
-  const getSchoolName = (schoolId: string) =>
-    schoolMap.get(schoolId) || "Unknown University";
-  const internPeriodMap = new Map(
-    internPeriods.map((period: { id: any; name: any }) => [
-      period.id,
-      period.name,
-    ]),
-  );
-
-  const getInternPeroidName = (internPeriodId: string) =>
-    internPeriodMap.get(internPeriodId) || "Unknown intern period";
 
   const formatDateOfBirth = (dob: string) => {
     const date = new Date(dob); // Convert string to Date object
@@ -155,9 +134,7 @@ export default function AccountsTable(props: AccountTableProps) {
         case "fullName":
           return <div>{candidate.fullName}</div>;
         case "group":
-          return (
-            <div>{getInternPeroidName(candidate.internPeriodId) as string}</div>
-          );
+          return <div>{candidate.internPeriodViewModel.name}</div>;
         case "doB":
           return <div>{formatDateOfBirth(candidate.doB)}</div>;
         case "phoneNumber":
@@ -171,7 +148,7 @@ export default function AccountsTable(props: AccountTableProps) {
         case "role":
           return <div>{candidate.role}</div>;
         case "universityId":
-          return <div>{getSchoolName(candidate.universityId) as string}</div>;
+          return <div>{candidate.universityViewModel.name}</div>;
         case "status":
           return (
             <Chip
@@ -186,12 +163,12 @@ export default function AccountsTable(props: AccountTableProps) {
         case "actions":
           return (
             <div className="relative flex items-center gap-2">
-              <Tooltip content="View">
+              <Tooltip content="Delete">
                 <button
                   onClick={() => handleDelete(candidate.id)}
                   className="cursor-pointer text-lg active:opacity-50"
                 >
-                  <DeleteIcon />
+                  <DeleteIcon className="bg-red-500 text-red-500" />
                 </button>
               </Tooltip>
               <Tooltip content="Edit">
@@ -203,7 +180,7 @@ export default function AccountsTable(props: AccountTableProps) {
           );
       }
     },
-    [schools, internPeriods],
+    [],
   );
 
   if (isLoading) {
