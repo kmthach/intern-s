@@ -8,4 +8,5 @@ export const apiEndpoints = {
   internPeriod: `${API_BASE_URL}/intern-period`,
   position: `${API_BASE_URL}/position`,
   sendEmail: `${API_BASE_URL}/mail/multi-recipients`,
+  responseEmail: `${API_BASE_URL}/mail/response`,
 };
