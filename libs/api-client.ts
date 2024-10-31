@@ -29,8 +29,14 @@ export default class APIClient {
   async post<ResponseType>(
     url: string,
     data = {},
-    config = {},
+    headers = {},
   ): Promise<ResponseType> {
+    // If auth is true, add the Authorization header to the request by using the access token stored in cookies
+
+    const config = {
+      headers,
+    };
+
     const response = await this.client.post<ResponseType>(url, data, config);
 
     return response.data as ResponseType;

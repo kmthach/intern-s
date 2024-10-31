@@ -34,13 +34,19 @@ import { DatePicker } from "@nextui-org/date-picker";
 import { TimeInput } from "@nextui-org/date-input";
 import { useState } from "react";
 import { Popover, PopoverTrigger, PopoverContent } from "@nextui-org/popover";
+import { create } from "zustand";
+import { sendEmail } from "@/actions/send-email";
+import { useFormState } from "react-dom";
+import { Spinner } from "@nextui-org/spinner";
 
 type ActionBarProps = {
   selectedInterns: Set<string>;
 };
 export default function ActionBar({ selectedInterns }: ActionBarProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [isShowPopover, setIsShowPopover] = useState(false);
+
+  const [isSending, setIsSending] = useState(false);
+
   const [format, setFormat] = useState(0);
 
   const apiClient = new APIClient();
@@ -56,29 +62,12 @@ export default function ActionBar({ selectedInterns }: ActionBarProps) {
     interviewer: "John Doe",
   };
 
-  const scheduleInterviewMutation = useMutation({
-    mutationFn: async (params: {
-      recipients: string[];
-      subject: string;
-      date: string;
-      time: string;
-      duration: string;
-      format: number;
-      location: string;
-      interviewer: string;
-      attachments?: File[];
-    }) => {
-      apiClient.post(apiEndpoints.sendInterviewEmail, params);
+  const mockInterviewers = [
+    {
+      id: "a3e1d205-a2c3-404b-b66a-286681af34f6",
+      name: "John Doe",
     },
-
-    onError: (error) => {
-      console.error("Error:", error);
-    },
-
-    onSuccess: () => {
-      console.log("Interview scheduled successfully");
-    },
-  });
+  ];
 
   // /// test the scheduleInterviewMutation
   // React.useEffect(() => {
@@ -114,89 +103,129 @@ export default function ActionBar({ selectedInterns }: ActionBarProps) {
           {(onClose) => (
             <>
               <ModalHeader>Send Email</ModalHeader>
+
               <ModalBody>
-                <Input
-                  type="text"
-                  placeholder="Subject"
-                  className="w-full"
-                  variant="underlined"
-                  required
-                />
-                <Textarea
-                  placeholder="Content"
-                  className="mt-2 w-full"
-                  rows={10}
-                  variant="underlined"
-                  required
-                />
-
-                <DatePicker
-                  label="Interview Date"
-                  variant="bordered"
-                  hideTimeZone
-                  showMonthAndYearPickers
-                  defaultValue={now(getLocalTimeZone())}
-                />
-
-                <TimeInput
-                  label="Duration"
-                  variant="bordered"
-                  hideTimeZone
-                  hourCycle={24}
-                  defaultValue={new Time(0, 30)}
-                />
-
-                <Select
-                  label="Format"
-                  variant="bordered"
-                  defaultSelectedKeys={["0"]}
-                  onSelectionChange={(key) => setFormat(Number(key))}
-                >
-                  <SelectItem key={0} value="0">
-                    Online
-                  </SelectItem>
-                  <SelectItem key={1} value="1">
-                    Offline
-                  </SelectItem>
-                </Select>
-
-                {format === 0 ? (
-                  <Input
-                    type="text"
-                    placeholder="Meeting URL"
-                    className="w-full"
-                    variant="bordered"
-                    required
-                  />
+                {isSending ? (
+                  <div className="flex items-center gap-2">
+                    <p>Sending email...</p>
+                    <Spinner />
+                  </div>
                 ) : (
-                  <Input
-                    type="text"
-                    placeholder="Location"
-                    className="w-full"
-                    variant="bordered"
-                    required
-                  />
+                  <form
+                    onSubmit={async (e) => {
+                      e.preventDefault();
+                      // Append the selected intern's email to the form data
+                      const formData = new FormData(
+                        e.target as HTMLFormElement,
+                      );
+
+                      formData.append(
+                        "recipients",
+                        Array.from(selectedInterns).join(","),
+                      );
+                      setIsSending(true);
+                      await sendEmail(formData);
+                      setIsSending(false);
+                      onClose();
+                    }}
+                    className="flex flex-col gap-3"
+                  >
+                    <Input
+                      type="text"
+                      placeholder="Subject"
+                      className="w-full"
+                      variant="underlined"
+                      name="subject"
+                      required
+                    />
+                    <Textarea
+                      placeholder="Content"
+                      className="mt-2 w-full"
+                      rows={10}
+                      variant="underlined"
+                      name="content"
+                      required
+                    />
+
+                    <DatePicker
+                      label="Interview Date"
+                      variant="bordered"
+                      hideTimeZone
+                      showMonthAndYearPickers
+                      defaultValue={now(getLocalTimeZone())}
+                      name="dateTime"
+                    />
+
+                    <TimeInput
+                      label="Duration"
+                      variant="bordered"
+                      hideTimeZone
+                      hourCycle={24}
+                      defaultValue={new Time(0, 30)}
+                      name="duration"
+                    />
+
+                    <Select
+                      label="Format"
+                      variant="bordered"
+                      defaultSelectedKeys={["0"]}
+                      onSelectionChange={(key) => setFormat(Number(key))}
+                      name="format"
+                    >
+                      <SelectItem key={0} value="0">
+                        Online
+                      </SelectItem>
+                      <SelectItem key={1} value="1">
+                        Offline
+                      </SelectItem>
+                    </Select>
+
+                    {format === 0 ? (
+                      <Input
+                        type="text"
+                        placeholder="Meeting URL"
+                        className="w-full"
+                        variant="bordered"
+                        name="location"
+                        required
+                      />
+                    ) : (
+                      <Input
+                        type="text"
+                        placeholder="Location"
+                        className="w-full"
+                        variant="bordered"
+                        required
+                        name="location"
+                      />
+                    )}
+
+                    <Select
+                      label="Interviewer"
+                      variant="bordered"
+                      defaultSelectedKeys={[
+                        "a3e1d205-a2c3-404b-b66a-286681af34f6",
+                      ]}
+                      name="interviewer"
+                    >
+                      {mockInterviewers.map((interviewer) => (
+                        <SelectItem key={interviewer.id} value={interviewer.id}>
+                          {interviewer.name}
+                        </SelectItem>
+                      ))}
+                    </Select>
+
+                    <Button
+                      color="secondary"
+                      size="sm"
+                      variant="shadow"
+                      type="submit"
+                    >
+                      <EmailIcon /> Send email
+                    </Button>
+                  </form>
                 )}
               </ModalBody>
-
-              <ModalFooter>
-                <Button
-                  color="danger"
-                  variant="light"
-                  size="sm"
-                  onPress={onClose}
-                >
-                  Close
-                </Button>
-                <Button
-                  color="secondary"
-                  size="sm"
-                  variant="shadow"
-                  onPress={onClose}
-                >
-                  <EmailIcon /> Send email
-                </Button>
-              </ModalFooter>
             </>
           )}
         </ModalContent>
