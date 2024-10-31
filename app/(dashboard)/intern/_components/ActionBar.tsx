@@ -7,6 +7,12 @@ import {
   ExcelIcon,
   DeleteIcon,
 } from "@/app/(dashboard)/intern/_components/Icons";
+import {
+  now,
+  getLocalTimeZone,
+  parseZonedDateTime,
+  Time,
+} from "@internationalized/date";
 
 import { Input, Textarea } from "@nextui-org/input";
 
@@ -21,27 +27,63 @@ import {
 
 import { Select, SelectItem } from "@nextui-org/select";
 import NewInternModal from "@/app/(dashboard)/intern/_components/NewInternModal";
+import { apiEndpoints } from "@/libs/config";
+import APIClient from "@/libs/api-client";
+import { useMutation } from "@tanstack/react-query";
+import { DatePicker } from "@nextui-org/date-picker";
+import { TimeInput } from "@nextui-org/date-input";
+import { useState } from "react";
+import { Popover, PopoverTrigger, PopoverContent } from "@nextui-org/popover";
 
-export default function ActionBar() {
+type ActionBarProps = {
+  selectedInterns: Set<string>;
+};
+export default function ActionBar({ selectedInterns }: ActionBarProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const emailType = [
-    {
-      key: "interview",
-      label: "Email interview",
+  const [isShowPopover, setIsShowPopover] = useState(false);
+  const [format, setFormat] = useState(0);
+
+  const apiClient = new APIClient();
+
+  const mockInterviewData = {
+    recipients: "18a8198e-5624-4c8d-b419-adfb3c9d77f9",
+    subject: "Interview schedule",
+    date: "2022-10-10",
+    time: "10:00",
+    duration: "1:00",
+    format: 0,
+    location: "https://meet.google.com/abc-def",
+    interviewer: "John Doe",
+  };
+
+  const scheduleInterviewMutation = useMutation({
+    mutationFn: async (params: {
+      recipients: string[];
+      subject: string;
+      date: string;
+      time: string;
+      duration: string;
+      format: number;
+      location: string;
+      interviewer: string;
+      attachments?: File[];
+    }) => {
+      apiClient.post(apiEndpoints.sendInterviewEmail, params);
     },
-    {
-      key: "result",
-      label: "Interview result",
+
+    onError: (error) => {
+      console.error("Error:", error);
     },
-    {
-      key: "information",
-      label: "Internship information",
+
+    onSuccess: () => {
+      console.log("Interview scheduled successfully");
     },
-    {
-      key: "grade",
-      label: "Score grade",
-    },
-  ];
+  });
+
+  // /// test the scheduleInterviewMutation
+  // React.useEffect(() => {
+  //   scheduleInterviewMutation.mutate(mockInterviewData);
+  // }, []);
 
   return (
     <div className="flex items-center gap-2 p-4">
@@ -54,7 +96,16 @@ export default function ActionBar() {
         <ExcelIcon /> Export to Excel
       </Button>
 
-      <Button color="secondary" size="sm" variant="shadow" onPress={onOpen}>
+      <Button
+        color="secondary"
+        size="sm"
+        variant="shadow"
+        onPress={(e) => {
+          if (selectedInterns.size === 0) {
+            alert("Please select at least one intern");
+          } else onOpen();
+        }}
+      >
         <EmailIcon /> Send email
       </Button>
 
@@ -64,26 +115,68 @@ export default function ActionBar() {
             <>
               <ModalHeader>Send Email</ModalHeader>
               <ModalBody>
-                <div className="flex items-center gap-4">
-                  <Select
-                    label="Choose type of email"
-                    isRequired
-                    className="mb-14 max-w-[30%]"
-                  >
-                    {emailType.map((email) => (
-                      <SelectItem key={email.key}>{email.label}</SelectItem>
-                    ))}
-                  </Select>
-                  <Textarea
-                    placeholder="Enter email..."
-                    classNames={{
-                      base: "max-w-xl",
-                      input: "min-h-[100px]",
-                    }}
-                  >
-                    Hi
-                  </Textarea>
-                </div>
+                <Input
+                  type="text"
+                  placeholder="Subject"
+                  className="w-full"
+                  variant="underlined"
+                  required
+                />
+                <Textarea
+                  placeholder="Content"
+                  className="mt-2 w-full"
+                  rows={10}
+                  variant="underlined"
+                  required
+                />
+
+                <DatePicker
+                  label="Interview Date"
+                  variant="bordered"
+                  hideTimeZone
+                  showMonthAndYearPickers
+                  defaultValue={now(getLocalTimeZone())}
+                />
+
+                <TimeInput
+                  label="Duration"
+                  variant="bordered"
+                  hideTimeZone
+                  hourCycle={24}
+                  defaultValue={new Time(0, 30)}
+                />
+
+                <Select
+                  label="Format"
+                  variant="bordered"
+                  defaultSelectedKeys={["0"]}
+                  onSelectionChange={(key) => setFormat(Number(key))}
+                >
+                  <SelectItem key={0} value="0">
+                    Online
+                  </SelectItem>
+                  <SelectItem key={1} value="1">
+                    Offline
+                  </SelectItem>
+                </Select>
+
+                {format === 0 ? (
+                  <Input
+                    type="text"
+                    placeholder="Meeting URL"
+                    className="w-full"
+                    variant="bordered"
+                    required
+                  />
+                ) : (
+                  <Input
+                    type="text"
+                    placeholder="Location"
+                    className="w-full"
+                    variant="bordered"
+                    required
+                  />
+                )}
               </ModalBody>
 
               <ModalFooter>

@@ -10,7 +10,7 @@ import {
 } from "@nextui-org/table";
 
 import { Chip, ChipProps } from "@nextui-org/chip";
-import React from "react";
+import React, { Key } from "react";
 import { EditIcon } from "@/app/(dashboard)/intern/_components/Icon";
 import { Tooltip } from "@nextui-org/tooltip";
 import { Pagination } from "@nextui-org/pagination";
@@ -25,10 +25,10 @@ const statusColorMap: Record<string, ChipProps["color"]> = {
 };
 
 export type AccountTableProps = {
-  selectedInterns: any[];
-  setSelectedInterns: (interns: any[]) => void;
+  selectedInterns: Set<string>;
+  setSelectedInterns: (selectedInterns: Set<string>) => void;
 };
-export default function AccountsTable(props: AccountTableProps) {
+export default function InternsTable(props: AccountTableProps) {
   const {
     data: allData,
     refetch,
@@ -57,7 +57,7 @@ export default function AccountsTable(props: AccountTableProps) {
     return `${day}/${month}/${year}`; // Return formatted date
   };
 
-  const mutation = useMutation({
+  const deleteInternMutation = useMutation({
     mutationFn: (id: number) =>
       fetch(apiEndpoints.candidate + "/" + id, {
         method: "DELETE",
@@ -78,7 +78,7 @@ export default function AccountsTable(props: AccountTableProps) {
     );
 
     if (confirmDelete) {
-      mutation.mutate(id);
+      deleteInternMutation.mutate(id);
     }
   };
 
@@ -193,8 +193,8 @@ export default function AccountsTable(props: AccountTableProps) {
         <Table
           selectionMode="multiple"
           className="m-5 w-auto"
-          onSelectionChange={(selected) => {
-            console.log(selected);
+          onSelectionChange={(keys) => {
+            props.setSelectedInterns(keys as Set<string>);
           }}
         >
           <TableHeader columns={columns}>
