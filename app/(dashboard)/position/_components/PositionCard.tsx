@@ -6,12 +6,28 @@ import { Chip } from "@nextui-org/chip";
 import { Button } from "@nextui-org/button";
 import { Checkbox } from "@nextui-org/checkbox";
 import { EditIcon } from "./Icons";
-export default function PositionCard() {
+
+type Position = {
+  name: string;
+  technology: string;
+  rank: string;
+  leader: string;
+  subLeader: string;
+  mentor: string;
+  zaloGroupLink: string;
+  memberCount: number;
+};
+
+type PositionCardProps = {
+  position: Position;
+};
+
+export default function PositionCard({ position }: PositionCardProps) {
   return (
     <Card>
       <CardHeader className="flex gap-1">
         <div className="flex w-full justify-between">
-          <p className="text-lg font-semibold">Back-end</p>
+          <p className="text-lg font-semibold">{position.name}</p>
           <div className="flex items-center gap-1">
             <Button
               variant="light"
