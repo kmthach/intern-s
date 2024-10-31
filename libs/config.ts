@@ -6,4 +6,5 @@ export const apiEndpoints = {
   candidate: `${API_BASE_URL}/candidate`,
   university: `${API_BASE_URL}/university`,
   internPeriod: `${API_BASE_URL}/intern-period`,
+  position: `${API_BASE_URL}/position`,
 };
