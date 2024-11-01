@@ -38,6 +38,11 @@ export const NavigationItems = [
     icon: InternManagementIcon,
   },
   {
+    label: "Universities",
+    href: "/university",
+    icon: InternManagementIcon,
+  },
+  {
     label: "Positions",
     href: "/position",
     icon: PositionManagementIcon,
