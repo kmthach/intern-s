@@ -20,24 +20,20 @@ import {
   Modal,
   ModalContent,
   ModalHeader,
-  ModalBody,
   ModalFooter,
   useDisclosure,
+  ModalBody,
 } from "@nextui-org/modal";
 
 import { Select, SelectItem } from "@nextui-org/select";
 import NewInternModal from "@/app/(dashboard)/intern/_components/NewInternModal";
-import { apiEndpoints } from "@/libs/config";
 import APIClient from "@/libs/api-client";
-import { useMutation } from "@tanstack/react-query";
 import { DatePicker } from "@nextui-org/date-picker";
 import { TimeInput } from "@nextui-org/date-input";
 import { useState } from "react";
-import { Popover, PopoverTrigger, PopoverContent } from "@nextui-org/popover";
-import { create } from "zustand";
 import { sendEmail } from "@/actions/send-email";
-import { useFormState } from "react-dom";
 import { Spinner } from "@nextui-org/spinner";
+import ImportExcelModal from "@/app/(dashboard)/intern/_components/ImportExcelModal";
 
 type ActionBarProps = {
   selectedInterns: Set<string>;
@@ -69,11 +65,6 @@ export default function ActionBar({ selectedInterns }: ActionBarProps) {
     },
   ];
 
-  // /// test the scheduleInterviewMutation
-  // React.useEffect(() => {
-  //   scheduleInterviewMutation.mutate(mockInterviewData);
-  // }, []);
-
   return (
     <div className="flex items-center gap-2 p-4">
       <Input
@@ -81,9 +72,8 @@ export default function ActionBar({ selectedInterns }: ActionBarProps) {
         placeholder="Search by name, group, technology,..."
         className="h-10 w-[45%]"
       />
-      <Button color="success" size="sm" variant="shadow" className="text-white">
-        <ExcelIcon /> Export to Excel
-      </Button>
+
+      <ImportExcelModal />
 
       <Button
         color="secondary"

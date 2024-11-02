@@ -18,6 +18,7 @@ export default function InterviewConfirmation() {
   const scheduleId = searchParams.get("scheduleId");
   const candidateId = searchParams.get("candidateId");
   const [isSending, setIsSending] = React.useState(false);
+  const [isReject, setIsReject] = React.useState(true);
 
   // Makesure the scheduleId and candidateId are not null
   if (!scheduleId || !candidateId) {
@@ -47,11 +48,13 @@ export default function InterviewConfirmation() {
               }}
             >
               <h1 className="font-bold">Interview Confirmation</h1>
+
               <p>
                 Please confirm your attendance to the interview. If you are
                 unable to attend, please reject the invitation and provide a
                 reason.
               </p>
+
               <RadioGroup
                 label="
               Proceed to the interview?
@@ -59,16 +62,30 @@ export default function InterviewConfirmation() {
                 name="status"
                 defaultValue="0"
               >
-                <Radio value={"0"}>Reject</Radio>
-                <Radio value={"1"}>Accept</Radio>
-              </RadioGroup>
+                <Radio
+                  value={"1"}
+                  onClick={() => setIsReject(false)}
+                  isDisabled={isSending}
+                >
+                  Accept
+                </Radio>
 
-              <Textarea
-                label="Reason"
-                placeholder="Please provide a reason"
-                labelPlacement="outside"
-                name="reason"
-              />
+                <Radio
+                  value={"0"}
+                  onClick={() => setIsReject(true)}
+                  isDisabled={isSending}
+                >
+                  Reject
+                </Radio>
+              </RadioGroup>
+              {isReject && (
+                <Textarea
+                  label="Reason"
+                  placeholder="Please provide a reason"
+                  labelPlacement="outside"
+                  name="reason"
+                />
+              )}
               <Button color="primary" type="submit">
                 Send
               </Button>
