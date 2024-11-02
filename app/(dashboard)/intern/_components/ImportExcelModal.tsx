@@ -10,13 +10,13 @@ import {
   useDisclosure,
 } from "@nextui-org/modal";
 import { Button } from "@nextui-org/button";
-import { CreateIcon } from "@/app/(dashboard)/intern/_components/Icons";
 import { useQuery } from "@tanstack/react-query";
 import { apiEndpoints } from "@/libs/config";
 import { Select, SelectItem } from "@nextui-org/select";
 import { Spinner } from "@nextui-org/spinner";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ExcelIcon } from "@/app/(dashboard)/intern/_components/Icons";
 
 function ImportExcelModal() {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
@@ -112,14 +112,14 @@ function ImportExcelModal() {
   return (
     <div>
       <Button
-        color="warning"
-        size="md"
-        startContent={<CreateIcon />}
+        color="success"
+        size="sm"
+        startContent={<ExcelIcon />}
         className="text-white"
         variant="shadow"
         onPress={handleOpen}
       >
-        New Intern
+        Import excel file
       </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} className="w-6/12">
         <ModalContent>
