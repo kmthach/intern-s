@@ -4,7 +4,10 @@ import React from "react";
 
 function UniversityPage() {
   return (
-    <div>
+    <div className="p-6">
+      <h1 className="text-left text-2xl font-semibold capitalize text-black">
+        University management
+      </h1>
       <ActionBar />
       <UniversityTable />
     </div>
