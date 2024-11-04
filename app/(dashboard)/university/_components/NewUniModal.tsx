@@ -11,7 +11,7 @@ import {
 import { Button } from "@nextui-org/button";
 import { Input } from "@nextui-org/input";
 import { CreateIcon } from "@/app/(dashboard)/intern/_components/Icons";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiEndpoints } from "@/libs/config";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -28,6 +28,8 @@ export default function NewUniverModal() {
   const [name, setName] = useState("");
   const [abbreviation, setAbbreviation] = useState("");
   const [address, setAddress] = useState("");
+
+  const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
     mutationFn: async (newUni: UniversityData) => {
@@ -55,6 +57,7 @@ export default function NewUniverModal() {
 
     onSuccess: () => {
       toast.success("New university added successfully!");
+      queryClient.invalidateQueries(); // Refetch data
       onClose();
     },
   });
