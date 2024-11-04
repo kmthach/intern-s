@@ -48,8 +48,8 @@ export const NavigationItems = [
     icon: PositionManagementIcon,
   },
   {
-    label: "Technologies",
-    href: "/technology",
+    label: "Questions",
+    href: "/question",
     icon: TechnologyManagementIcon,
   },
   {
