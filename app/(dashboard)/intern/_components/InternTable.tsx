@@ -36,7 +36,7 @@ const statusColorMap: Record<string, ChipProps["color"]> = {
 };
 
 export default function InternPeriodTable() {
-  const [selectedPeriod, setSelectedPeriod] = useState<string | null>(null);
+  const [selectedPeriod, setSelectedPeriod] = useState<number | null>(null);
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
 
   const { isLoading, error, data, refetch } = useQuery({
@@ -45,7 +45,6 @@ export default function InternPeriodTable() {
       const internPeriod = await fetch(apiEndpoints.internPeriod).then((res) =>
         res.json(),
       );
-
       return { period: internPeriod?.data?.pagingData || [] };
     },
   });
@@ -53,8 +52,8 @@ export default function InternPeriodTable() {
   const periodData = data?.period || [];
 
   const deleteMutation = useMutation({
-    mutationFn: (id: string) =>
-      fetch(apiEndpoints.internPeriod + "/" + id, { method: "DELETE" }).then(
+    mutationFn: (id: number) =>
+      fetch(`${apiEndpoints.internPeriod}/${id}`, { method: "DELETE" }).then(
         (response) => response.json(),
       ),
 
@@ -68,7 +67,7 @@ export default function InternPeriodTable() {
     },
   });
 
-  const handleDeleteConfirmation = (id: string) => {
+  const handleDeleteConfirmation = (id: number) => {
     setSelectedPeriod(id);
     onOpen();
   };
@@ -170,6 +169,7 @@ export default function InternPeriodTable() {
           )}
         </TableBody>
       </Table>
+
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           <ModalBody>
@@ -183,13 +183,8 @@ export default function InternPeriodTable() {
           </ModalBody>
         </ModalContent>
       </Modal>
-      <ToastContainer
-        position="bottom-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        closeOnClick
-        draggable
-      />
+
+      <ToastContainer position="bottom-right" autoClose={3000} />
     </>
   );
 }

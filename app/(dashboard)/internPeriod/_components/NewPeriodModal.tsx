@@ -15,6 +15,8 @@ import { CreateIcon } from "@/app/(dashboard)/intern/_components/Icons";
 import { parseDate } from "@internationalized/date"; // Parses a date string or Date object to DateValue
 import { useMutation } from "@tanstack/react-query";
 import { apiEndpoints } from "@/libs/config";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface PeriodData {
   name: string;
@@ -28,30 +30,45 @@ interface PeriodData {
 }
 
 export default function NewPeriodModal() {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [universityAttended, setUniversityAttended] = useState("");
   const [internshipDuration, setinternshipDuration] = useState("");
   const [totalMember, settotalMember] = useState("");
   const [status, setStatus] = useState("");
-  const [startDate, setStartDate] = useState(parseDate("2024-10-28")); // Initial date in string format
-  const [endDate, setEndDate] = useState(parseDate("2024-10-28")); // Current date
+  const [startDate, setStartDate] = useState(
+    parseDate(new Date().toISOString().split("T")[0]),
+  );
+  const [endDate, setEndDate] = useState(
+    parseDate(new Date().toISOString().split("T")[0]),
+  );
 
-  const { mutate, isSuccess } = useMutation({
-    mutationFn: (newPeriod: PeriodData) =>
-      fetch(apiEndpoints.internPeriod, {
+  const { mutate } = useMutation({
+    mutationFn: async (newPeriod: PeriodData) => {
+      const response = await fetch(apiEndpoints.internPeriod, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(newPeriod),
-      }).then((res) => {
-        return res.json();
-      }),
+      });
 
+      if (!response.ok) {
+        const errorData = await response.json();
+
+        throw new Error(errorData.message || "Failed to create intern period");
+      }
+
+      return response.json();
+    },
     onError: (error) => {
       console.error("Error:", error); // Log the error to the console
+      toast.error(error.message);
+    },
+    onSuccess: () => {
+      toast.success("New intern period created successfully!");
+      onClose();
     },
   });
 
@@ -117,7 +134,7 @@ export default function NewPeriodModal() {
               <div className="grid grid-cols-3 gap-4">
                 <Input
                   label="Internship Duration"
-                  placeholder="Enter internship duration"
+                  placeholder="Enter duration (months)"
                   labelPlacement="outside"
                   value={internshipDuration}
                   onChange={(e) => setinternshipDuration(e.target.value)}
@@ -167,6 +184,12 @@ export default function NewPeriodModal() {
           </>
         </ModalContent>
       </Modal>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        closeOnClick
+        draggable
+      />
     </>
   );
 }

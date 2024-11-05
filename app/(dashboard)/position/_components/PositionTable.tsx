@@ -192,10 +192,6 @@ export default function PositionTable() {
     }
   }, []);
 
-  if (isLoading) {
-    return <Spinner size="lg" />;
-  }
-
   if (error) {
     return <div>Error + {error.message}</div>;
   }
@@ -208,7 +204,17 @@ export default function PositionTable() {
             <TableColumn key={column.key}>{column.label}</TableColumn>
           )}
         </TableHeader>
-        <TableBody items={universityData}>
+        <TableBody
+          items={universityData}
+          loadingState={isLoading ? "loading" : "idle"}
+          loadingContent={
+            <div className="flex items-center gap-2">
+              <Spinner />
+              Loading...
+            </div>
+          }
+          emptyContent={<div>No position found!</div>}
+        >
           {(uni: any) => (
             <TableRow key={uni.id}>
               {(columnKey) => (

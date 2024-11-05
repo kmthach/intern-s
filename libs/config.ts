@@ -7,6 +7,7 @@ export const apiEndpoints = {
   university: `${API_BASE_URL}/university`,
   internPeriod: `${API_BASE_URL}/intern-period`,
   position: `${API_BASE_URL}/position`,
+  technology: `${API_BASE_URL}/technology`,
   sendEmail: `${API_BASE_URL}/mail/multi-recipients`,
   responseEmail: `${API_BASE_URL}/mail/response`,
 };
