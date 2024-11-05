@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import AccountTable from "@/app/(dashboard)/intern/_components/AccountTable";
+import InternTable from "@/app/(dashboard)/intern/_components/InternTable";
 import ActionBar from "./_components/ActionBar";
 
 export default function InternPage() {
@@ -14,7 +14,7 @@ export default function InternPage() {
         Intern management
       </h1>
       <ActionBar selectedInterns={selectedInterns} />
-      <AccountTable
+      <InternTable
         selectedInterns={selectedInterns}
         setSelectedInterns={setSelectedInterns}
       />
